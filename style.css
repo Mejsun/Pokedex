@@ -1,0 +1,120 @@
+.container{
+    width: 900px;
+    height: 700px;
+    background-color: red;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+    border-radius: 5% ;
+    border: solid black 2px;
+}
+.searchBar{
+    display: flex;
+    margin:auto;
+    margin-top: 20px;
+    background-color: white;
+    width: 400px;
+    height: 50px;
+    border-radius: 30px ;
+    border: solid black 2px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    padding-left: 20px;
+}
+.mainScreens{
+    display: flex;
+    margin:auto;
+    flex-direction: row;
+}
+.pokeData, .fullList{
+    width: 400px;
+    height: 400px;
+    border-radius: 20px;
+    margin: 10px;
+}
+.pokeData{
+    display: grid;
+    background-color: black;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+}
+.nav{
+    float: left;
+    margin-bottom: 100px;
+    margin-left: 65px;
+    width: 350px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+    font-size: 20px;
+}
+.left{
+    background-color:grey;
+    border: solid black 2px;
+    width: 150px;
+    height: 50px;
+    float: left;
+}
+.right{
+    background-color:grey;
+    border: solid black 2px;
+    width: 150px;
+    height: 50px;
+    float: right;
+}
+.left:hover, .right:hover{
+    cursor: pointer;
+    background-color: rgb(161, 161, 161);
+}
+.cell{
+    margin: auto;
+    display: flex;
+}
+.cell:hover, .pokemonItemList:hover{
+    background-color: rgba(182, 182, 182, 0.3);
+}
+
+.pokeId, .pokeName{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 30px;
+    color: black;
+    height: 60px;
+    width: 180px;
+    grid-row: 1;
+}
+.pokeName{
+    width: 100px;
+}
+.pokeImageFront, .pokeImageBack{
+    width: 150px;
+    height: 150px;
+    grid-row:2;
+}
+.pokeHeight, .pokeWeight, .pokeTypeOne, .pokeTypeTwo {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 20px;
+    color: black;
+    width: 150px;
+    height: 60px;
+}
+.pokeHeight, .pokeWeight{
+    grid-row:3;
+}
+.pokeTypeOne, .pokeTypeTwo {
+    border-radius: 20px;
+    grid-row: 4;
+
+}
+.fullList{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-left: 6px;
+    background-color: white;
+}
+.pokemonItemList{
+    width: 190px;
+    height: 30px;
+    border-radius: 10px;
+    font-size: 15px;
+    color: black;
+}
