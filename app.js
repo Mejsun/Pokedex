@@ -9,11 +9,15 @@ const pokeTypeOne = document.querySelector('.pokeTypeOne')
 const pokeTypeTwo = document.querySelector('.pokeTypeTwo')
 const fullList = document.querySelector('.fullList')
 const pokemonListItem = document.querySelectorAll('.pokemonItemList')
-
+const prevBtn = document.querySelector('.left')
+const nextBtn = document.querySelector('.right')
 
 const capitalise = (string) => string[0].toUpperCase() + string.substring(1);
 
-fetch ('https://pokeapi.co/api/v2/pokemon?offset=0&limit=20')
+
+
+const pokeListFetched = (url) => {
+fetch (url)
     .then (res => res.json())
     .then (data => {
         const results = data['results'];
@@ -21,7 +25,7 @@ fetch ('https://pokeapi.co/api/v2/pokemon?offset=0&limit=20')
             const pokemonListItems = pokemonListItem[i];
             const namesList = results[i]['name']
             const idUrl = results[i]['url']
-            const idNum = idUrl .split('/')
+            const idNum = idUrl.split('/')
             const urlPokeId = idNum[idNum.length-2];
         if(namesList){
             pokemonListItems.textContent = urlPokeId +'. '+ capitalise(namesList);
@@ -29,8 +33,10 @@ fetch ('https://pokeapi.co/api/v2/pokemon?offset=0&limit=20')
             pokemonListItems.textContent = ''
         }
     })
+}
 
-fetch ('https://pokeapi.co/api/v2/pokemon/1')
+const pokeIdFetched = id => {
+fetch (`https://pokeapi.co/api/v2/pokemon/${id}`)
     .then (res => res.json())
     .then (data => {
         pokeID.textContent = data['id'].toString().padStart(3,'0');
@@ -45,6 +51,20 @@ fetch ('https://pokeapi.co/api/v2/pokemon/1')
             pokeTypeTwo.textContent = '';
             pokeTypeTwo.style.display = 'none'
         }
+        pokeImageFront.style.display = 'block';
+        pokeImageBack.style.display = 'block'
         pokeImageFront.src = data['sprites']['front_default'] || '';
         pokeImageBack.src = data['sprites']['back_default'] || ''
 })
+}
+ 
+for (const pokemonListItems of pokemonListItem) {
+    pokemonListItems.addEventListener('click', (e) => {
+        const listItem = e.target;
+        const id = listItem.textContent.split('.')[0]
+        pokeIdFetched(id);
+    })
+}
+
+pokeListFetched('https://pokeapi.co/api/v2/pokemon?offset=0&limit=30');
+
