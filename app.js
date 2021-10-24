@@ -9,12 +9,15 @@ const pokeTypeOne = document.querySelector('.pokeTypeOne')
 const pokeTypeTwo = document.querySelector('.pokeTypeTwo')
 const fullList = document.querySelector('.fullList')
 const pokemonListItem = document.querySelectorAll('.pokemonItemList')
-const prevBtn = document.querySelector('.left')
-const nextBtn = document.querySelector('.right')
+const prevBtn = document.querySelector('.right')
+const nextBtn = document.querySelector('.left')
+
+
+let prevPoke = null;
+let nextPoke = null;
+
 
 const capitalise = (string) => string[0].toUpperCase() + string.substring(1);
-
-
 
 const pokeListFetched = (url) => {
 fetch (url)
@@ -35,7 +38,7 @@ fetch (url)
     })
 }
 
-const pokeIdFetched = id => {
+let pokeIdFetched = id => {
 fetch (`https://pokeapi.co/api/v2/pokemon/${id}`)
     .then (res => res.json())
     .then (data => {
@@ -57,14 +60,81 @@ fetch (`https://pokeapi.co/api/v2/pokemon/${id}`)
         pokeImageBack.src = data['sprites']['back_default'] || ''
 })
 }
+
  
 for (const pokemonListItems of pokemonListItem) {
     pokemonListItems.addEventListener('click', (e) => {
         const listItem = e.target;
-        const id = listItem.textContent.split('.')[0]
+        let id = listItem.textContent.split('.')[0];
         pokeIdFetched(id);
-    })
+
+        let prevPoke = id--;
+        let nextPoke = id++;
+
+        let prevBtnClicked = (e) => {
+            if (prevPoke !== 0){
+                pokeIdFetched (prevPoke);
+            }
+        }
+        let nextBtnClicked = (e) => {
+            pokeIdFetched (nextPoke);
+        }
+        
+        prevBtn.addEventListener('click', prevBtnClicked);
+        nextBtn.addEventListener('click', nextBtnClicked);
+
+        })
 }
 
+
+
+
+
 pokeListFetched('https://pokeapi.co/api/v2/pokemon?offset=0&limit=30');
+
+/*  function prev(prevPoke) {
+            if (prevPoke===0){
+                prevBtn.disabled=true;
+                nextBtn.disabled=false;
+            }else{
+                return prevPoke;
+            }} 
+
+
+
+
+function prev() {
+    let i = pokeIdFetched;
+    for (let i = 0; i = pokemonListItem.length; i++) {
+    if (i=0){
+        prevBtn.disabled=true;
+        nextBtn.disabled=false;
+    }else{
+        return i++;
+    }}
+}
+prevBtn.addEventListener('click', prev);
+
+
+onRightClick = (e) => {
+    let i = 0;
+    let nextIndex = i++;
+    if (nextIndex === pokemonListItem.length) {
+       return 0;
+    } else {
+       return nextIndex;
+    }
+    
+}
+
+onLeftClick = (e) => {
+    let i = 0;
+    let previousIndex = i--;
+    if (previousIndex === -1) {
+       return pokemonListItem.length - 1;
+    } else {
+         return previousIndex;
+    }
+}
+*/
 
