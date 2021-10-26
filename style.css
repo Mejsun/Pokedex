@@ -96,16 +96,17 @@
     overflow-x: scroll;
 }
 .fullList::-webkit-scrollbar{
-    width: 4px;
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
-    background-color: black;
+    height: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-color: white;
     overflow: hidden;
-}
 
+}
 .fullList::-webkit-scrollbar-thumb {
     background: #888;
     border-radius: 15px;
+   
 }
 .pokemonItemList{
     width: 180px;
