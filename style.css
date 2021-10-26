@@ -52,7 +52,7 @@
     margin: auto;
     display: flex;
 }
-.cell:hover, .pokemonItemList:hover{
+.pokemonItemList:hover{
     background-color: rgba(182, 182, 182, 0.3);
 }
 .pokeId, .pokeName{
