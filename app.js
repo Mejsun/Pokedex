@@ -31,11 +31,12 @@ const colours = {
     normal: 'white'
 };
 
+
+let id = 1;
+let pokemonID = id;
+
 const capitalise = (string) => string[0].toUpperCase() + string.substring(1);
 
-const resetScreen = () => {
-    grid.classList.add('hide');
-}
 const pokeListFetched = (url) => {
 fetch (url)
     .then (res => res.json())
@@ -52,19 +53,33 @@ fetch (url)
         }else{
             pokemonListItems.textContent = ''
         }
-        
+            
         pokemonListItems.addEventListener('click', (e) => {
             const listItem = e.target;
             let id = listItem.textContent.split('.')[0];
             pokeIdFetched(id);
+           
+            let i = parseInt(id);
+            let prevPoke = i-1;
+            let nextPoke = i+1;
             
+        prevBtn.addEventListener('click', ()=> {
+            console.log(prevPoke)
+            pokeIdFetched(prevPoke); 
+            });
+        
+        
+        nextBtn.addEventListener('click', () => {
+            console.log(nextPoke)
+            pokeIdFetched(nextPoke);
+            });
         })
         
-    }
+        }
     })
 }
 
-const pokeIdFetched = id => {
+let pokeIdFetched = id => {
 fetch (`https://pokeapi.co/api/v2/pokemon/${id}`)
     .then (res => res.json())
     .then (data => {
@@ -89,40 +104,16 @@ fetch (`https://pokeapi.co/api/v2/pokemon/${id}`)
         pokeImageFront.style.display = 'block';
         pokeImageBack.style.display = 'block'
         pokeImageFront.src = data['sprites']['front_default'] || '';
-        pokeImageBack.src = data['sprites']['back_default'] || ''
-
-
-        for (let i = id; i <= pokemonListItem.length; i++){
-            let i = parseInt(id);
-            let prevPoke = i-1;
-            let nextPoke = i+1;
-
-            function prevBtnClicked (){
-                console.log(prevPoke)
-                if (prevPoke !==0) {
-                    return prevPoke;   
-                }else{
-                    prevPoke.disabled = true
-                }}
-        
-            function nextBtnClicked () {
-                console.log(nextPoke)
-                if (nextPoke) {
-                    return nextPoke;
-                }else{
-                    nextPoke.disabled = true;
-                }}
-
-            resetScreen();
-
-            prevBtn.addEventListener('click', prevBtnClicked);
-            nextBtn.addEventListener('click', nextBtnClicked);
-        }
+        pokeImageBack.src = data['sprites']['back_default'] || ''  
     })
 
 }
 
-pokeListFetched('https://pokeapi.co/api/v2/pokemon?offset=0&limit=30');
+window.addEventListener('click', () => {
+    pokeIdFetched('');
+})
+
+pokeListFetched('https://pokeapi.co/api/v2/pokemon?offset=0&limit=150');
 
 
 /*  
