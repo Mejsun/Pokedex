@@ -4,69 +4,35 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Pokedex</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <input type="text" placeholder="Which Pokemon do you choose?" class="searchBar"><br>
-        <div class="mainScreens">
-            <div class="pokeData">
-               <div class="grid">
-                <div class="cell pokeName"></div>
-                <div class="cell pokeId"></div>
+        <input type="text" placeholder="Which Pokemon do you choose?" id="searchBar"><br>
+        <div class="screens">    
+
+            <div class="pokeData grid">   
+                <div class="cell pokeName"></div>       
+                <div class="cell pokeId"></div> 
                 <div class="cell"><img src="" class="pokeImageFront"></div>
                 <div class="cell"><img src="" class="pokeImageBack"></div>
                 <div class="cell pokeHeight"></div>
                 <div class="cell pokeWeight"></div>
                 <div class="cell pokeTypeOne"></div>
                 <div class="cell pokeTypeTwo"></div>
-            </div> 
             </div>
-            <div class="fullList">
-                <div class="1stcolumn">
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-            </div>
-            <div class="2ndcolumn">
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-            </div>
-            <div class="3rdcolumn">
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-                <div class="pokemonItemList"></div>
-            </div>
-            </div>
-        </div> <br>
+            
+            <div class="fullList"></div>
+        
+        </div> 
+        <br>
         <div class="nav">
-            <button class="left"><i class="fa-solid fa-caret-left"></i></button>
-            <button class="right"><i class="fa-solid fa-caret-right"></i></button>
+            <button class="prev"><i class="fa-solid fa-caret-left"></i></button>
+            <button class="next"><i class="fa-solid fa-caret-right"></i></button>
         </div>
+
     </div>
     <script src="app.js"></script>
 </body>

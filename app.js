@@ -1,6 +1,6 @@
-const mainScreen = document.querySelector('.pokeData')
+let id =[];
+let pokemonId;
 const grid = document.querySelector('.grid')
-const cell = document.querySelectorAll('.cell')
 const pokeID = document.querySelector('.pokeId')
 const pokeName = document.querySelector('.pokeName')
 const pokeImageFront = document.querySelector('.pokeImageFront')
@@ -10,10 +10,10 @@ const pokeWeight = document.querySelector('.pokeWeight')
 const pokeTypeOne = document.querySelector('.pokeTypeOne')
 const pokeTypeTwo = document.querySelector('.pokeTypeTwo')
 const fullList = document.querySelector('.fullList')
-const pokemonListItem = document.querySelectorAll('.pokemonItemList')
-const prevBtn = document.querySelector('.left')
-const nextBtn = document.querySelector('.right')
-const searchBar = document.querySelector('.searchBar')
+const prevBtn = document.querySelector('.prev')
+const nextBtn = document.querySelector('.next')
+const pokemonItemList = document.querySelectorAll('.pokemonItemList')
+const searchBar = document.querySelector('#searchBar')
 const colours = {
     fire: 'rgb(255, 194, 173)',
     grass: 'rgb(203, 245, 174)',
@@ -31,173 +31,82 @@ const colours = {
     normal: 'white'
 };
 
+const capitalise = (string) => string[0].toUpperCase() + string.substring(1)
 
-let id = 1;
-let pokemonID = id;
+function prevId(){pokemonId--}
+function nextId(){pokemonId++}
 
-const capitalise = (string) => string[0].toUpperCase() + string.substring(1);
-
-const pokeListFetched = (url) => {
-fetch (url)
+function pokeIdFetched (number) {
+fetch (`https://pokeapi.co/api/v2/pokemon/${number}`)
     .then (res => res.json())
-    .then (data => {
-        const results = data['results'];
-        for (let i = 0; i<pokemonListItem.length; i++){
-            const pokemonListItems = pokemonListItem[i];
-            const namesList = results[i]['name']
-            const idUrl = results[i]['url']
-            const idNum = idUrl.split('/')
-            const urlPokeId = idNum[idNum.length-2];
-        if(namesList){
-            pokemonListItems.textContent = urlPokeId +'. '+ capitalise(namesList);
-        }else{
-            pokemonListItems.textContent = ''
-        }
-            
-        pokemonListItems.addEventListener('click', (e) => {
-            const listItem = e.target;
-            let id = listItem.textContent.split('.')[0];
-            pokeIdFetched(id);
-           
-            let i = parseInt(id);
-            let prevPoke = i-1;
-            let nextPoke = i+1;
-            
-        prevBtn.addEventListener('click', ()=> {
-            console.log(prevPoke)
-            pokeIdFetched(prevPoke); 
-            });
-        
-        
-        nextBtn.addEventListener('click', () => {
-            console.log(nextPoke)
-            pokeIdFetched(nextPoke);
-            });
-        })
-        
-        }
-    })
-}
-
-let pokeIdFetched = id => {
-fetch (`https://pokeapi.co/api/v2/pokemon/${id}`)
-    .then (res => res.json())
-    .then (data => {
-            
-        pokeID.textContent = data['id'].toString().padStart(3,'0');
+    .then (data => {      
+        pokeID.textContent = data['id'];
         pokeName.textContent = capitalise(data['name']);
         pokeHeight.textContent = 'Height: ' + data['height']
         pokeWeight.textContent = 'Weight: ' + data['weight']
         const dataTypeOne = data['types'][0]['type']['name']
-        pokeTypeOne.textContent = 'Type 1: ' +capitalise(dataTypeOne);
-        const dataTypeTwo = data['types'][1];
+        const dataTypeTwo = data['types'][1]
+        pokeTypeOne.textContent = 'Type 1: ' + capitalise(dataTypeOne);
         if(dataTypeTwo){
             pokeTypeTwo.textContent = 'Type 2: ' + capitalise(dataTypeTwo['type']['name']);
         }else{
             pokeTypeTwo.textContent = '';
-            pokeTypeTwo.style.display = 'none'
         }
-        
+        pokeImageFront.src = data['sprites']['front_default'] || '';
+        pokeImageBack.src = data['sprites']['back_default'] || '' ; 
+        pokeImageFront.style.display = 'block';
+        pokeImageBack.style.display = 'block';
+
         const colour = colours[dataTypeOne]
         grid.style.backgroundColor = colour;
-        
-        pokeImageFront.style.display = 'block';
-        pokeImageBack.style.display = 'block'
-        pokeImageFront.src = data['sprites']['front_default'] || '';
-        pokeImageBack.src = data['sprites']['back_default'] || ''  
     })
-
 }
 
-window.addEventListener('click', () => {
-    pokeIdFetched('');
+function fetchedList (url)  {
+    fetch (url)
+        .then (res => res.json())
+        .then (data => {
+            const results = data['results'];
+            for (let i = 0; i<results.length; i++){               
+                const namesList = results[i]['name']
+                const idUrl = i+1   
+                let theList = document.createElement('p');
+                theList.innerHTML = `<p class="pokemonItemList">${idUrl}. ${capitalise(namesList)}</p>`
+                fullList.appendChild(theList);     
+            }
+        })
+}
+
+fullList.addEventListener('click', (e) => {
+    const listItem = e.target.innerText;
+    let pokeIdNum = listItem.split('.')[0];
+    let idNum = parseInt(pokeIdNum); 
+    pokemonId = idNum;
 })
 
-pokeListFetched('https://pokeapi.co/api/v2/pokemon?offset=0&limit=150');
-
-
-/*  
-
-        nextBtn.onclick = () => {
-            if (nextPoke) {
-                return nextPoke;
-            }
-        };
-
-        prevBtn.onclick = () => {
-            if (prevPoke !== 0) {
-                return prevPoke;  
-            }  
-        };
-
-        searchBar.addEventListener('keyup', (e) => {
-            a = pokemonListItem.textContent;
-            input = searchBar.innerText;
-            if (input === a) {
-            console.log(pokemonListItem)
-            } 
-        })
-
+window.addEventListener('click', (e) => {
+    if(e.target.className === 'prev' && pokemonId>1){
+        prevId();
     }
+    if(e.target.className === 'next'&& pokemonId<150){
+        nextId()
+    }
+    pokeIdFetched(pokemonId)
+})
 
+searchBar.addEventListener('keyup', () => {
+    let searchInput = searchBar.value.toUpperCase();
+    let existingPokeList = fullList.childNodes;
+    for (i = 0; i < existingPokeList.length; i++) {
+      p = existingPokeList[i].getElementsByTagName("p")[0];
+      txtValue = p.textContent || p.innerText;
+      if (txtValue.toUpperCase().indexOf(searchInput) > -1) {
+        existingPokeList[i].style.display = "";
+      } else {
+        existingPokeList[i].style.display = "none";
+      }
+    }
+})
 
-    nextBtn.addEventListener('click', nextBtnClick);
-    prevBtn.addEventListener('click', prevBtnClick);
-}
-
-for (let i = id; i < pokemonListItem.length; i++) {
-            
-        let nextPoke = i++;
-        
-        let nextBtnClicked = () => {
-            if (nextPoke){
-            return nextPoke;
-            }
-        }
-        nextBtn.addEventListener('click', nextBtnClicked);
-        }
-let prevBtnClicked = () => {
-            if (prevPoke !== 0){
-                return prevPoke;
-            }
-        }
-prevBtn.addEventListener('click', prevBtnClicked);
-
-function prev(prevPoke) {
-            if (prevPoke===0){
-                prevBtn.disabled=true;
-                nextBtn.disabled=false;
-            }else{
-                return prevPoke;
-            }} 
-
-function prev() {
-    let i = pokeIdFetched;
-    for (let i = 0; i = pokemonListItem.length; i++) {
-    if (i=0){
-        prevBtn.disabled=true;
-        nextBtn.disabled=false;
-    }else{
-        return i++;
-    }}
-}
-prevBtn.addEventListener('click', prev);
-
-for (let i = 0; i < pokemonListItem.length; i++) {
-        const nextPoke = id++;
-        let nextBtnClicked  = () => {
-            if (nextPoke){
-                pokeIdFetched (nextPoke);
-        }}}
-        for (let i = 0; i < pokemonListItem.length; i--) {
-        const prevPoke = id--;
-        let prevBtnClicked= () => {
-            if (prevPoke !== 0){
-                pokeIdFetched (prevPoke);
-        }}}
-
-
-reset screen, add pokelist, search bar, prev and next btns
-
-        */
+fetchedList('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=150');
 
