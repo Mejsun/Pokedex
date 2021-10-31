@@ -40,7 +40,7 @@ function pokeIdFetched (number) {
 fetch (`https://pokeapi.co/api/v2/pokemon/${number}`)
     .then (res => res.json())
     .then (data => {      
-        pokeID.textContent = data['id'];
+        pokeID.textContent = data['id'].toString().padStart(3,'0');
         pokeName.textContent = capitalise(data['name']);
         pokeHeight.textContent = 'Height: ' + data['height']
         pokeWeight.textContent = 'Weight: ' + data['weight']
